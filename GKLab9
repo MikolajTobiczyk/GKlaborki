@@ -1,0 +1,105 @@
+
+var glCanvas = document.getElementById("glcanvas");
+var scena = new THREE.Scene({color: 0xffffff});
+var perspCamera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 1, 1000);
+
+var renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+
+// Funkcja która wyświetla elementy na scenie
+function animate() {
+    requestAnimationFrame(animate);
+    renderer.render(scena, perspCamera);
+}
+
+// Światło ustawienia
+var dirLight = new THREE.DirectionalLight(0xffffff, 1);
+dirLight.position.set(-10, 1, 12);
+perspCamera.add(dirLight);
+scena.add(perspCamera);
+
+// Kolor całej figury.
+kolorFigury = new THREE.MeshPhongMaterial({color: 0x202020,});
+
+// Podstawa
+postawaCylinder1 = new THREE.CylinderGeometry(0.75, 0.75, 0.15, 100);
+podstawaDol = new THREE.Mesh(postawaCylinder1, kolorFigury);
+postawaCylinder2 = new THREE.CylinderGeometry(0.7, 0.7, 0.15, 100);
+podstawaGora = new THREE.Mesh(postawaCylinder2, kolorFigury);
+podstawaGora.position.y = 0.15;
+segment1_podstawa = new THREE.Group();
+segment1_podstawa.add(podstawaDol);
+segment1_podstawa.add(podstawaGora);
+segment1_podstawa.position.set(0, -3.75, 0);
+segment1_podstawa.scale.set(3,2,2);
+size = 0.2;
+
+
+
+// środek
+czlonCylinder1 = new THREE.CylinderGeometry(1.09, 1.5, 2, 100);
+czlonDol = new THREE.Mesh(czlonCylinder1, kolorFigury);
+czlonDol.position.set(0, -2, -0);
+czlonCylinder2 = new THREE.CylinderGeometry(0.85, 1.09, 2, 100);
+czlonGora = new THREE.Mesh(czlonCylinder2, kolorFigury);
+var segment2_czlon = new THREE.Group();
+segment2_czlon.add(czlonDol);
+segment2_czlon.add(czlonGora);
+
+
+
+// góra obrecze
+obreczCylinder1 = new THREE.CylinderGeometry(1.5, 1.5, 0.25, 100);
+obreczDol1 = new THREE.Mesh(obreczCylinder1, kolorFigury);
+obreczCylinder2 = new THREE.CylinderGeometry(1.1, 1.1, 0.8, 100);
+obreczDol2 = new THREE.Mesh(obreczCylinder2, kolorFigury);
+segment3_obrecz = new THREE.Group();
+segment3_obrecz.add(obreczDol1);
+segment3_obrecz.add(obreczDol2);
+segment3_obrecz.position.set(0, 1.1, 0);
+
+obreczCylinder3 = new THREE.CylinderGeometry(0.9, 0.9, 0.75, 100);
+obreczGora1 = new THREE.Mesh(obreczCylinder3, kolorFigury);
+obreczCylinder4 = new THREE.CylinderGeometry(1.5, 1.5, 0.25, 100);
+obreczGora2 = new THREE.Mesh(obreczCylinder4, kolorFigury);
+segment4_obrecz = new THREE.Group();
+segment4_obrecz.add(obreczGora1);
+segment4_obrecz.add(obreczGora2);
+segment4_obrecz.position.set(0, 1.85, 0);
+
+//góra cylindry
+
+GoraCylinder1 = new THREE.CylinderGeometry(1.25, 0.5, 2, 100);
+CylinderGora1 = new THREE.Mesh(GoraCylinder1, kolorFigury);
+segment5_cylinder = new THREE.Group();
+segment5_cylinder.add(CylinderGora1);
+segment5_cylinder.position.set(0, 1.9, 0);
+
+GoraCylinder2 = new THREE.CylinderGeometry(0.5, 1.25, 1, 100);
+CylinderGora2 = new THREE.Mesh(GoraCylinder2, kolorFigury);
+segment6_cylinder = new THREE.Group();
+segment6_cylinder.add(CylinderGora2);
+segment6_cylinder.position.set(0, 3.4, 0);
+
+//Kula na górze XD
+
+KulaSphere = new THREE.SphereGeometry(Math.PI / 6.2, 100, 100, Math.PI,  2*Math.PI, 0, 0.75 * Math.PI);
+kolorFigury.side = THREE.DoubleSide;
+Kula = new THREE.Mesh(KulaSphere, kolorFigury);
+Kula.position.set(0, 1.5, 0);
+
+
+segment7_kula = new THREE.Group();
+segment7_kula.add(Kula);
+segment7_kula.position.set(0,2.8,0);
+
+calaFigura = new THREE.Group();
+
+calaFigura.add(segment1_podstawa, segment2_czlon, segment3_obrecz, segment4_obrecz, segment5_cylinder, segment6_cylinder, segment7_kula);
+scena.add(calaFigura);
+
+perspCamera.position.z = 6;
+perspCamera.position.y = 1.5;
+animate();
